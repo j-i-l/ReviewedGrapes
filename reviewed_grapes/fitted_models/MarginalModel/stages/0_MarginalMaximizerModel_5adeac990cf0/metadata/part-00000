@@ -1,0 +1,1 @@
+{"class":"reviewed_grapes.models.MarginalMaximizerModel","timestamp":1622217919835,"sparkVersion":"3.1.1","uid":"MarginalMaximizerModel_5adeac990cf0","paramMap":{"inputCol":"label","outputCol":"prediction","topLabel":0.0},"defaultParamMap":{"outputCol":"MarginalMaximizerModel_5adeac990cf0__output"}}

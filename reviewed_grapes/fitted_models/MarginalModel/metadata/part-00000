@@ -1,0 +1,1 @@
+{"class":"pyspark.ml.pipeline.PipelineModel","timestamp":1622217919436,"sparkVersion":"3.1.1","uid":"PipelineModel_1af49569c3f8","paramMap":{"stageUids":["MarginalMaximizerModel_5adeac990cf0","IndexToString_8b142f2d028a"],"language":"Python"},"defaultParamMap":{}}

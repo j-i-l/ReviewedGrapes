@@ -1,0 +1,1 @@
+{"class":"pyspark.ml.pipeline.PipelineModel","timestamp":1622228550602,"sparkVersion":"3.1.1","uid":"PipelineModel_eb19386e321b","paramMap":{"stageUids":["NLTKLemmatizer_3634256b87d1","WordSetTrackerModel_c3df7f1eea70","LogisticRegression_846b6e77627d","IndexToString_46341c32cff1"],"language":"Python"},"defaultParamMap":{}}
