@@ -1,19 +1,21 @@
 #!/usr/bin/env python
 
 import os
-import glob
 from distutils.core import setup
 
 GITHUB_LOCATION = "https://github.com/j-i-l/reviewedgrapes"
 
-def get_files(directory):                                                                                             
+
+def get_files(directory):
+    """Collect all files for the trained models."""
     files = []
-    for r, d, f in os.walk(directory):                                                                               
+    for r, d, f in os.walk(directory):
         for af in f:
-            tf = os.path.join(r,af)
+            tf = os.path.join(r, af)
             files.append(os.path.join(*(tf.split(os.path.sep)[1:])))
     return files
-            
+
+
 setup(name='ReviewedGrapes',
       version='1.0',
       description='Distribution of fitted ML models that predict wine variety '
@@ -21,8 +23,7 @@ setup(name='ReviewedGrapes',
       author='Jonas I Liechti',
       author_email='j-i-l@t4d.ch',
       # url='https://www.python.org/sigs/distutils-sig/',
-      packages=['reviewed_grapes',
-                'reviewed_grapes.utils'],
+      packages=['reviewed_grapes'],
       package_dir={'reviewed_grapes': 'reviewed_grapes'},
       package_data={'reviewed_grapes':
                     get_files('reviewed_grapes/fitted_models')},
