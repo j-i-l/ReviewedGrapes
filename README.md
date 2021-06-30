@@ -1,6 +1,6 @@
 # Reviewed Grapes
 
-Did you ever had to chance to look at wine reviews? If not, here's a glimpse:
+Did you ever had the chance to look at wine reviews? If not, here's a glimpse:
 
 > _Pineapple rind, lemon pith and orange blossom start off the aromas. The palate is a bit more opulent, with notes of honey-drizzled guava and mango giving way to a slightly astringent, semidry finish._
 

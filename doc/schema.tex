@@ -1,0 +1,169 @@
+\documentclass{article}
+\usepackage{tikz}
+\usetikzlibrary{shapes, snakes}
+\usetikzlibrary{arrows,positioning} 
+
+%%%<
+\usepackage{verbatim}
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{10pt}%
+%%%>
+
+\begin{comment}
+:Title: Schema for ReviewedGrapes Pipeline
+\end{comment}
+
+\tikzstyle{model} = [rectangle, rounded corners, minimum width=3cm,
+		     minimum height=1cm, text centered, draw=black, 
+		     very thick, fill=gray!30]
+\tikzstyle{conjunction} = [diamond, rounded corners, text centered, draw=black, 
+		     very thick, fill=black]
+\tikzstyle{var} = [ellipse, minimum width=3cm,
+		        minimum height=1cm, draw=black, 
+		        very thick, fill=blue!30, align=center,
+			xshift=-0.9cm]
+\tikzstyle{input} = [ellipse, minimum width=3cm,
+		        minimum height=1cm, draw=black, 
+		        very thick, fill=blue!30, align=center,
+			dashed]
+\tikzstyle{connect} = [thick, -, >=stealth, very thick]
+\tikzstyle{output} = [thick, ->, >=stealth, very thick]
+
+\tikzstyle{dataset} = [draw=gray, fill=gray!20, very thick,
+    rectangle, rounded corners, inner sep=1pt, inner ysep=2pt]
+\tikzstyle{fancytitle} = [fill=gray, text=white]
+\tikzstyle{features} = [draw=gray, fill=green!10, very thick,
+    rectangle, rounded corners, inner sep=1pt, inner ysep=2pt]
+\tikzstyle{targetset} = [draw=gray, fill=blue!10, very thick,
+    rectangle, rounded corners, inner sep=1pt, inner ysep=2pt]
+
+\begin{document}
+
+
+%%%%%
+
+\begin{figure}
+\begin{tikzpicture}[node distance=4.5cm]
+	% start with designating the deployed part
+	\node [dataset, minimum height=4.95cm, minimum width=24.0cm, xshift=6.5cm, yshift=0.6cm, anchor=west] (deployable){};
+	\node[fancytitle, rounded corners, right=10pt] at (deployable.north west) {DEPLOYABLE PIPELINE};
+	% designate the advanced feature creation part with deep AI
+	\node [features, minimum height=1.6cm, minimum width=13.3cm, xshift=17.2cm, yshift=4.9cm, anchor=north west] (featuresbox){};
+	\node[fancytitle, rounded corners, right=10pt] at (featuresbox.north west) {ADVANCED FEATURE CREATION WITH DEEP AI};
+	% designate the target set variable
+	\node [targetset, minimum height=2.15cm, minimum width=18.1cm, xshift=12.2cm, yshift=2.9cm, anchor=north west] (targetset){};
+	\node[fancytitle, rounded corners, xshift=-0.3cm, anchor=east] at (targetset.south east) {TARGET SET};
+
+	% and now draw the nodes
+	\node (dataset) [model, minimum height=3cm, draw=purple!80black] {%
+	    \begin{minipage}{0.20\textwidth}
+		    \centering
+		    \large\textbf{Dataset}
+		    \small
+		    \begin{itemize}
+			    \item[-] review
+			    \item[-] variety 
+		    \end{itemize}
+	    \end{minipage}
+    	};
+	\node (indexer) [model, right of=dataset] {%
+	    \begin{minipage}{0.20\textwidth}
+		    Indexer\\
+		    \tiny
+		    variety $\to$ label
+	    \end{minipage}
+	};
+	\node (lemmatizer) [model, right of=indexer] {%
+	    \begin{minipage}{0.20\textwidth}
+		    Lemmatizer\\
+		    \tiny
+		    review $\to$ word set
+	    \end{minipage}
+	};
+	\node (conjunction) [conjunction, right of=lemmatizer, xshift=-2cm] {};
+	% upper part first
+	\node (wstupper) [model, right of=conjunction, xshift=-1cm, yshift=4cm] {%
+	    \begin{minipage}{0.25\textwidth}
+		    Word Set Estimator\\
+		    \tiny
+		    word set $\to$ target set
+	    \end{minipage}
+	};
+	\node (pairing) [model, right of=wstupper] {%
+	    \begin{minipage}{0.25\textwidth}
+		    Pairing\\
+		    \tiny
+		    word set + variety $\to$ pairs
+	    \end{minipage}
+	};
+	\node (encoding) [model, right of=pairing] {%
+	    \begin{minipage}{0.25\textwidth}
+		    Encoding\\
+		    \tiny
+		    words $\to$ vectors 
+	    \end{minipage}
+	};
+	\node (ranking) [model, right of=encoding] {%
+	    \begin{minipage}{0.25\textwidth}
+		    Similarity Ranking\\
+		    \tiny
+		    vectors $\to$ target set
+	    \end{minipage}
+	};
+	\node (common) [var, below of=wstupper, yshift=2.7cm] {Common};
+	\node (similar) [var, right of=common] {Similar};
+	\node (dissimilar) [var, right of=similar] {Dissimilar};
+	\node (extremes) [var, right of=dissimilar] {Extremes};
+	\node (lowentropy) [var, right of=extremes] {Low Entropy};
+	% draw the connections
+	\draw [connect] (dataset) -- (indexer);
+	\draw [connect] (indexer) -- (lemmatizer);
+	\draw [connect] (lemmatizer) -- (conjunction);
+	\draw [connect] (conjunction) |- (wstupper);
+	\draw [connect] (wstupper) -- (pairing);
+	\draw [connect] (pairing) -- (encoding);
+	\draw [connect] (encoding) -- (ranking);
+	\draw[->, >=stealth, bend right=10, thick] (wstupper) to (common);
+	\draw[->, >=stealth, bend right=5, thick] (ranking.south) to (similar);
+	\draw[->, >=stealth, bend right=7, thick] (ranking.south) to (dissimilar);
+	\draw[->, >=stealth, bend right=10, thick] (ranking.south) to (extremes);
+	\draw[->, >=stealth, bend right=10, thick] (ranking.south) to (lowentropy);
+
+	% lower part
+	\node (wstlower) [model, right of=conjunction, yshift=-1cm] {%
+	    \begin{minipage}{0.25\textwidth}
+		    Word Set Tracker\\
+		    \tiny
+		    word set + target set $\to$ feature vector
+	    \end{minipage}
+	};
+	\node (logistic) [model, right of=wstlower] {%
+	    \begin{minipage}{0.25\textwidth}
+		    Logistic Regression\\
+		    \tiny
+		    feature vector $\to$ label
+	    \end{minipage}
+	};
+	\node (converter) [model, right of=logistic] {%
+	    \begin{minipage}{0.25\textwidth}
+		    Converter\\
+		    \tiny
+		    label $\to$ variety 
+	    \end{minipage}
+	};
+	\node (wstinput) [input, above of=wstlower, yshift=-2.75cm, dashed] {};
+	% draw the connections
+	\draw [connect] (conjunction) |- (wstlower);
+	\draw [connect] (wstlower) -- (logistic);
+	\draw [connect] (logistic) -- (converter);
+	\draw[--, >=stealth, bend right=10, thick] (common.south) to (wstinput);
+	\draw[--, >=stealth, bend left=10, thick] (similar.south) to (wstinput);
+	\draw[--, >=stealth, bend left=10, thick] (dissimilar.south) to (wstinput);
+	\draw[--, >=stealth, bend left=7, thick] (extremes.south) to (wstinput);
+	\draw[--, >=stealth, bend left=5, thick] (lowentropy.south) to (wstinput);
+	\draw[->, >=stealth, thick] (wstinput) to (wstlower);
+\end{tikzpicture}
+\end{figure}
+
+\end{document}
